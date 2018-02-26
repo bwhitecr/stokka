@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.deepPurple,
       ),
       home: new MyHomePage(title: 'Stokka Home Page'),
     );
@@ -49,13 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Random _random = new Random(654);
   OrderDataSource _dataSource = new OrderDataSource();
 
-  List<DataColumn> getColumns() {
-    var columns = new List<DataColumn>();
-    columns.add(new DataColumn(label: new Text('Product Code')));
-    columns.add(new DataColumn(label: new Text('Quantity'), numeric: true));
-    return columns;
-  }
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -64,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-      var productCode =  '$_counter';
+      var productCode = '$_counter';
       var qty = (_random.nextDouble() * 10).floor() + 1;
       var p = _dataSource.addRow(productCode, qty);
       print('Ordered product ${p.productCode}');
@@ -89,19 +82,30 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: new PaginatedDataTable(
-          header: new Text('header'),
-          columns: getColumns(),
+          header: new Text(_dataSource.description),
+          columns: [
+            new DataColumn(
+                label: new Text(
+              'Product Code',
+              style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            )),
+            new DataColumn(
+                label: new Text('Quantity',
+                    style: new TextStyle(
+                        fontSize: 18.0, fontWeight: FontWeight.bold)),
+                numeric: true)
+          ],
           source: _dataSource,
+          rowsPerPage: 6,
+          actions: [
+            new FloatingActionButton(
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: new Icon(Icons.add),
+            )
+          ],
         ),
-        // child: new ListView(
-        //   children: _order.orderedLines.map((product) => new Text('${product.productCode} ${product.quantityOrdered}')).toList(),
-        // ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

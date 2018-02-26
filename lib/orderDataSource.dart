@@ -14,13 +14,11 @@ class OrderDataSource extends DataTableSource {
   @override
   DataRow getRow(int index) {
     var product = _order.orderedLines[index];
-    var cells = new List<DataCell>();
-    cells.add(new DataCell(new Text('${product.productCode}')));
-    cells.add(new DataCell(new Text('${product.quantityOrdered}')));
 
-    var row = new DataRow(
-      cells: cells
-    );
+    var row = new DataRow(cells: [
+      new DataCell(new Text('${product.productCode}')),
+      new DataCell(new Text('${product.quantityOrdered}'))
+    ]);
     return row;
   }
 
@@ -33,4 +31,5 @@ class OrderDataSource extends DataTableSource {
   @override
   int get selectedRowCount => 0;
 
+  String get description => _order.description;
 }

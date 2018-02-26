@@ -1,11 +1,12 @@
 import './orderLineItem.dart';
 
 class Order {
-  num _lineId;
-  num orderNumber;
+  int _lineId;
+  int orderNumber;
   List<OrderLineItem> orderedLines;
 
   Order() {
+    orderNumber = 1;
     orderedLines = new List<OrderLineItem>();
     _lineId = 1;
   }
@@ -19,4 +20,6 @@ class Order {
     orderedLines.add(prod);
     return prod;
   }
+
+  String get description => 'Order: $orderNumber';
 }
