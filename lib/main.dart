@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import './order.dart';
+import './orderDataSource.dart';
 
 void main() => runApp(new MyApp());
 
@@ -46,8 +46,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 10000;
-  Order _order = new Order();
   Random _random = new Random(654);
+  OrderDataSource _dataSource = new OrderDataSource();
+
+  List<DataColumn> getColumns() {
+    var columns = new List<DataColumn>();
+    columns.add(new DataColumn(label: new Text('Product Code')));
+    columns.add(new DataColumn(label: new Text('Quantity'), numeric: true));
+    return columns;
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -59,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
       var productCode =  '$_counter';
       var qty = (_random.nextDouble() * 10).floor() + 1;
-      var p = _order.orderProduct(productCode, qty);
+      var p = _dataSource.addRow(productCode, qty);
       print('Ordered product ${p.productCode}');
     });
   }
@@ -81,9 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: new ListView(
-          children: _order.orderedLines.map((product) => new Text('${product.productCode} ${product.quantityOrdered}')).toList(),
+        child: new PaginatedDataTable(
+          header: new Text('header'),
+          columns: getColumns(),
+          source: _dataSource,
         ),
+        // child: new ListView(
+        //   children: _order.orderedLines.map((product) => new Text('${product.productCode} ${product.quantityOrdered}')).toList(),
+        // ),
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _incrementCounter,
