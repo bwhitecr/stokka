@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Pixel_2_emulator",
+            "type": "process",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "windows": {
+                "command": "${env:LocalAppData}\\Android\\sdk\\emulator\\emulator.exe",
+                "options": {
+                    "cwd": "${env:LocalAppData}\\Android\\sdk\\emulator"
+                }
+            },
+            "args": [
+                "-avd",
+                "Pixel_2_API_26"
+            ],
+            "isBackground": true
+        }
+    ]
+}
