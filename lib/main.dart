@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: new MyHomePage(title: 'Stokka Home Page'),
+      home: new MyHomePage(title: 'Stokka Orders'),
     );
   }
 }
@@ -87,12 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
             new DataColumn(
                 label: new Text(
               'Product Code',
-              style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             )),
             new DataColumn(
                 label: new Text('Quantity',
                     style: new TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.bold)),
+                        fontSize: 20.0, fontWeight: FontWeight.bold)),
                 numeric: true)
           ],
           source: _dataSource,
