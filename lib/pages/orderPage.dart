@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import '../ordering/order.dart';
 import '../ordering/OrderDataSource.dart';
 
-class OrderPage extends MaterialPageRoute<Null> {
-  OrderPage()
-      : super(builder: (BuildContext context) => new _OrderPageWidget());
+class OrderPage extends MaterialPageRoute<Order> {
+  OrderPage(Order order)
+      : super(builder: (BuildContext context) => new _OrderPageWidget(order));
 }
 
 class _OrderPageWidget extends StatefulWidget {
+  final Order order;
+
+  _OrderPageWidget(this.order);
+
   @override
-  _OrderDetailState createState() => new _OrderDetailState();
+  _OrderDetailState createState() => new _OrderDetailState(order);
 }
 
 class _OrderDetailState extends State<_OrderPageWidget> {
   int _counter = 10000;
   Random _random = new Random(654);
-  OrderDataSource _dataSource = new OrderDataSource();
+  OrderDataSource _dataSource;
+
+  _OrderDetailState(Order order) {
+    _dataSource = new OrderDataSource(order);
+  }
 
   void _incrementCounter() {
     setState(() {
