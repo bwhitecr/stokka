@@ -1,5 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:barcode_scan/barcode_scan.dart';
+
 import '../ordering/order.dart';
 import '../ordering/OrderDataSource.dart';
 
@@ -35,10 +41,31 @@ class _OrderDetailState extends State<_OrderPageWidget> {
       // called again, and so nothing would appear to happen.
       _counter++;
       var productCode = '$_counter';
-      var qty = (_random.nextDouble() * 10).floor() + 1;
-      var p = _dataSource.addRow(productCode, qty);
-      print('Ordered product ${p.productCode}');
+      var quantity = (_random.nextDouble() * 10).floor() + 1;
+      _addProduct(productCode, quantity);
     });
+  }
+
+  void _addProduct(String productCode, num quantity) {
+    var p = _dataSource.addRow(productCode, quantity);
+      print('Ordered product ${p.productCode}');
+  }
+
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() => _addProduct(barcode, 1));
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+          print('The user did not grant the camera permission!');
+      } else {
+        print('Unknown error: $e');
+      }
+    } on FormatException{
+      print('null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      print('Unknown error: $e');
+    }
   }
 
   @override
@@ -66,9 +93,18 @@ class _OrderDetailState extends State<_OrderPageWidget> {
           rowsPerPage: 6,
           actions: [
             new FloatingActionButton(
+              key: new Key('add'),
               onPressed: _incrementCounter,
-              tooltip: 'Increment',
+              tooltip: 'Add product',
               child: new Icon(Icons.add),
+              heroTag: null,
+            ),
+            new FloatingActionButton(
+              key: new Key('scan'),
+              onPressed: scan,
+              tooltip: 'Scan',
+              child: new Icon(Icons.scanner),
+              heroTag: null,
             )
           ],
         ),
