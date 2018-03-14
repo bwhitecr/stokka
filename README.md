@@ -1,8 +1,5 @@
 # stokka
 
-A new Flutter project.
+A Flutter project for ordering and stock control.
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+This is not meant to be an application used in production. It is just a sample for me to learn Flutter.

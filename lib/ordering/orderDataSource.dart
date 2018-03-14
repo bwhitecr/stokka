@@ -3,7 +3,11 @@ import './order.dart';
 import './orderLineItem.dart';
 
 class OrderDataSource extends DataTableSource {
-  Order _order = new Order();
+  Order _order;
+
+  OrderDataSource(Order order) {
+    this._order = order;
+  }
 
   OrderLineItem addRow(String productCode, num quantity) {
     var product = _order.orderProduct(productCode, quantity);
